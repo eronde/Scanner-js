@@ -5,6 +5,8 @@ function Scanner(){
   var _elemRaw=null;
   this.scanSpeed=600;
   this.selectColor='blue',this.deselectColor='';
+  this.controllerDivStyle ='background-color: yellow; width: 200px;';
+  this.controlBarStyle = 'background-color:yellow;';
   this.actions=[[]];
   var _timer = 0;
   /*
@@ -209,7 +211,7 @@ function Scanner(){
 
  /*
   *@return void
-  *@TODO Customizing style
+  *@POST: if controlBarStyle is already set by an other the style won't changed
   */
  _thisObj.setControlBar = function(){
    if (_elemRaw===null) {
@@ -220,7 +222,7 @@ function Scanner(){
    var controlBar=$('#controlBar');
    //Checks if controlBar already exists
    if (controlBar.length===0) {
-     var mPanel ='<div id="controlBar" style="background-color: yellow;" >';
+     var mPanel ='<div id="controlBar" style="'+_thisObj.controlBarStyle+'" >';
      mPanel +='<a id="scanModeOnOff_'+_elemRaw+'" title="'+_elemRaw+'" href="#" >Scan mode off</a>';
      mPanel +='</div>';
 
@@ -233,9 +235,8 @@ function Scanner(){
  } //setControlBar
 
  /*
-  *
+  * Style of controllerDiv can be changed
   *@return void
-  *@TODO Customizing style
   */
  _thisObj.setScanPanel = function(){
    if (_elemRaw===null) {
@@ -243,9 +244,9 @@ function Scanner(){
      return false;
 
    }
-
-   var panel =
-      '<div id="controllerDiv_'+_elemRaw+'" style="background-color: yellow; width: 200px;">';
+   
+  var panel =
+      '<div id="controllerDiv_'+_elemRaw+'" style="'+_thisObj.controllerDivStyle+'">';
     panel += 'scan NxM</br >  ';
     panel += '<input type="button" value="start" name="" id="start_'+_elemRaw+'" title="Start scanning items."/>';
     panel += '<input type="button" value="stop" name="" id="stop_'+_elemRaw+'" disabled="true"/> ';
