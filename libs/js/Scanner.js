@@ -246,9 +246,11 @@ function Scanner(){
 
  /*
   * Style of controllerDiv can be changed
+  * @para srcElem: Insert scanPanel in direction of srcElem, default:_element
+  * @para direction, after/before, default:after
   *@return void
   */
- _thisObj.setScanPanel = function(){
+ _thisObj.setScanPanel = function(srcElem,direction){
    if (_elemRaw===null) {
      console.error("_elemRaw is null");
      return false;
@@ -257,7 +259,7 @@ function Scanner(){
    
   var panel =
       '<div id="controllerDiv_'+_elemRaw+'" style="'+_thisObj.controllerDivStyle+'">';
-    panel += 'scan NxM</br >  ';
+    panel += 'scan NxM '+_elemRaw+'</br >  ';
     panel += '<input type="button" value="start" name="" id="start_'+_elemRaw+'" title="Start scanning items."/>';
     panel += '<input type="button" value="stop" name="" id="stop_'+_elemRaw+'" disabled="true"/> ';
     panel += '<input type="button" value="select" name="" id="select_'+_elemRaw+'" />';
@@ -265,8 +267,17 @@ function Scanner(){
     panel += '<font size="0.4px">Scan Speed:</font>   <input type="text" title="Set scan speed in ms." id="scanSpeed_'+_elemRaw+'" name="scanSpeed" value="600" style="width:60px;">';
     panel += '<input type="button" name="btnChangeSpeed" value="Change" id="changeScanSpeed_'+_elemRaw+'" disabled="true" >';
 
-        //Sets control panel after _element
-    $(_element).after(panel);
+        //Sets control panel 
+    //Checks if srcElem exists, else default _element
+    srcElem = ((typeof srcElem==='undefined'||srcElem===''||srcElem.length===0))?_element:srcElem;
+    console.info(srcElem);
+    if (direction==''||typeof direction==='undefined'||direction!='before') {
+      $(srcElem).after(panel);
+    }
+    else{
+      $(srcElem).before(panel);
+    }
+
     // Disable select, stop button    
     _thisObj.toggleButtonDisable('#stop_'+_elemRaw,true);
     _thisObj.toggleButtonDisable('#select_'+_elemRaw,true);

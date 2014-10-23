@@ -5,7 +5,9 @@ $(document).ready(function (){
    scanner.controllerDivStyle=''; 
    scanner.controlBarStyle='background-color:#999;';
    scanner.setControlBar();
-   scanner.setScanPanel();
+  //Insert scanPanel before #test0 div
+   scanner.setScanPanel("#test0",'before');
+   //set actions to each buttons in #test0
    for (var j = 0, len = 5; j < len; j+=1) {
      scanner.actions[j]=[];
      for (var i = 0, slen = 5; i < slen; i+=1) {
@@ -43,7 +45,6 @@ $(document).ready(function (){
      scanner.toggleButtonDisable('#start_test0',true);
    });
    $('#scanModeOnOff_test0').on('click',function(){
-     //disable start button, enable stop button ; 
      scanner.toggleScanOnOff();
    });
    $('#scanModeOnOff_test0').mouseenter(function(){ 
@@ -65,8 +66,11 @@ $(document).ready(function (){
 
 
 $(document).ready(function (){
+  //Set click event to each buttons in #test0
+  $('#test0 :button').on('click',function(){
+    alert($(this).val()+' is clicked.');
 });
-
+});
 
 $(document).ready(function (){
 
@@ -75,7 +79,8 @@ $(document).ready(function (){
   scanner.controllerDivStyle='background-color: yellow; width: 200px;'; 
   scanner.selectColor='green';
   scanner.setControlBar();
-   scanner.setScanPanel(); 
+  //Insert scanPanel after #test3 div
+   scanner.setScanPanel("#test3"); 
      scanner.toggleButtonDisable('#stop_test',true);
 
    $('#txtPB').click(function (){
@@ -85,7 +90,6 @@ $(document).ready(function (){
      scanner.toggleButtonDisable('#start_test',false);
      scanner.toggleButtonDisable('#select_test',true);
      scanner.toggleButtonDisable('#stop_test',true);
-     //disable stop button, enable start button ;
    });
    $('#start_test').on('click',function(){
      scanner.startTimer('row',scanner.scanSpeed);
@@ -93,16 +97,13 @@ $(document).ready(function (){
      scanner.toggleButtonDisable('#changeScanSpeed_test',true);
      scanner.toggleButtonDisable('#select_test',false);
      scanner.toggleButtonDisable('#stop_test',false);
-     //disable start button, enable stop button ;
    });
  scanner.toggleButtonDisable('#start_test',false);
    $('#select_test').on('click',function(){
-     //disable start button, enable stop button ; 
      scanner.selectItem();
      scanner.toggleButtonDisable('#start_test',true);
    });
    $('#scanModeOnOff_test').on('click',function(){
-     //disable start button, enable stop button ; 
      scanner.toggleScanOnOff();
    });
    $('#scanModeOnOff_test').mouseenter(function(){ 
