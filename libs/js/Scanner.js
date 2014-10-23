@@ -1,3 +1,11 @@
+/*
+ * Scanner.js is a small library which enables scanning mode on a html page.
+ *
+ * Scanner.js highlights all input buttons of a given element (table) one-by-one and makes a selection on the desired input button.
+ *
+ * See /libs/js/init.js to defining action of a specific input button.
+ */
+
 function Scanner(){
   var _thisObj = this;
   var _maxRows=null,_maxCols=null,_selRow=null,_selCol=null,_currentIndex=0;
@@ -33,22 +41,21 @@ function Scanner(){
    *@return mixed
    */
   _thisObj.startTimer= function(type,time){
-    console.log("_element "+_element);//TODO good
+    // console.log("_element "+_element);
     _timer = setInterval(function(){_startScanItems(type);},time);
   }//startTimer
 
   /*
    *
    *@return mixed
-  *TODO ADD type arg to reset var correctly
   * */
   _thisObj.stopTimer= function(type){
     _resetColor();
-    console.log("_currentIndex: "+_currentIndex+" _thisObj._timer: "+_timer);
+    // console.log("_currentIndex: "+_currentIndex+" _thisObj._timer: "+_timer);
     _timer=clearInterval(_timer);
-    console.log("Timer stop");
+    // console.log("Timer stop");
     _timer=0;
-     console.log("_currentIndex: "+_currentIndex+" _thisObj._timer: "+_timer);
+     // console.log("_currentIndex: "+_currentIndex+" _thisObj._timer: "+_timer);
     //Reset counters
     if (type==='row') {
       _currentIndex = 0;
@@ -64,7 +71,7 @@ function Scanner(){
     }    
   }//stopTimer
 /*
-   *
+  *@ 
    *@return mixed
   */
 
@@ -73,7 +80,7 @@ function Scanner(){
   }  //getElem
   /*
    *
-   *@return mixed
+   *@return selected col -1
   */
 
   _thisObj.getSelCol = function(){
@@ -83,7 +90,7 @@ function Scanner(){
   }  //getSelCol
   /*
    *
-   *@return mixed
+   *@return selected row -1
   */
 
   _thisObj.getSelRow = function(){
@@ -117,7 +124,7 @@ function Scanner(){
       var row = $(_element +' tr:eq('+_selRow+') td');  
     }else{}    
     
-    console.log(_currentIndex+"  "+_maxRows); 
+    // console.log(_currentIndex+"  "+_maxRows); 
     row.eq(_currentIndex).css('background', _thisObj.selectColor);
     // Unselect last item when loop is done
     if (_currentIndex===0) {
@@ -133,7 +140,6 @@ function Scanner(){
    *@return void
    */
   var _startScanItems = function(type){
-    console.log("_element "+_element);//TODO, false. _element is wrong by scanning #navBoardItems
     _scanItem(type);
     if (type==="row") {
      var maxItems=_maxRows; 
@@ -170,10 +176,10 @@ function Scanner(){
     //Checks what it scans
     // Scans columns
     if (_selRow===null) {
-      _selRow = _currentIndex-1;//Timer finish whole block before it stops
+      _selRow = _currentIndex-1;
       _thisObj.stopTimer("row");
       _setMaxCols(_selRow);
-      console.log("_maxCols " +_maxCols);
+      // console.log("_maxCols " +_maxCols);
       _thisObj.startTimer('col',_thisObj.scanSpeed);
     }
     // Reset all, execute item cmd
@@ -184,13 +190,13 @@ function Scanner(){
       // console.log(_getCmd());
       _getCmd();
       _thisObj.stopTimer("col");
-      console.log("_selCol "+ _selCol);
-     // _thisObj.startTimer('row',_thisObj.scanSpeed);
+      // console.log("_selCol "+ _selCol);
+     _thisObj.startTimer('row',_thisObj.scanSpeed);
     }
   }//_selectItem
 
   /*
-   * Pre: actions needs to be defined by user (see init.js for example
+   * Pre: actions needs to be pre-defined by user (see init.js for example)
    *@return void
    */
  var _getCmd = function() {
@@ -198,10 +204,14 @@ function Scanner(){
       console.error("_selRow or _selCol null");
       return false;
     }
-    if(typeof actions != "undefined" && actions != null && actions.length > 0){
-      console.log("_getCmd");
-      /*TODO Check if actions item is a function*/
-      _thisObj.actions[_selRow][_selCol].call();
+    if(typeof _thisObj.actions != "undefined" && _thisObj.actions != null && _thisObj.actions.length > 0){
+      // console.log("_getCmd");
+      if (typeof _thisObj.actions[_selRow][_selCol]==='function') {
+        _thisObj.actions[_selRow][_selCol].call();
+      }
+      else{
+        console.error("actions needs to be populated with functions.");
+      }
     }
     else     {
       console.error("Actions not defined.");

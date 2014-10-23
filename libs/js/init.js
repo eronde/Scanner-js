@@ -11,9 +11,10 @@ $(document).ready(function (){
      for (var i = 0, slen = 5; i < slen; i+=1) {
        scanner.actions[j].push(function(){
          var elem=scanner.getElem();
-         $(elem).css('background-color','red');
-         console.info(this);
-         alert(elem.val());
+         var col = scanner.getSelCol();
+         var row = scanner.getSelRow();
+       var val = $(elem +' tr:eq('+row+') td:eq('+col+')').children().first().prop('id');
+        alert(val);
        }
                               );
      }
