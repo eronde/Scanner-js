@@ -27,8 +27,6 @@ function Scanner(){
     _setMaxRows(elem);
     if (_maxRows!=null) {
       _elemRaw =_element.substr(1,_element.length); //Remove # of _element
-       console.log(_currentIndex);
-       console.log(_maxRows);
     }else   {
       console.error(_element+" selector doesn't exist\n"); 
       return 1;
@@ -48,19 +46,19 @@ function Scanner(){
   /*
    *
    *@return mixed
-  * */
+   * */
   _thisObj.stopTimer= function(type){
     _resetColor();
     // console.log("_currentIndex: "+_currentIndex+" _thisObj._timer: "+_timer);
     _timer=clearInterval(_timer);
     // console.log("Timer stop");
     _timer=0;
-     // console.log("_currentIndex: "+_currentIndex+" _thisObj._timer: "+_timer);
+    // console.log("_currentIndex: "+_currentIndex+" _thisObj._timer: "+_timer);
     //Reset counters
     if (type==='row') {
       _currentIndex = 0;
       _selCol=null;    
-    
+
     }else if(type==='col'){
       _selRow=null;
       _currentIndex = 0; 
@@ -70,10 +68,10 @@ function Scanner(){
       _currentIndex = 0; 
     }    
   }//stopTimer
-/*
-  *@ 
+  /*
+   *@ 
    *@return mixed
-  */
+   */
 
   _thisObj.getElem = function(){
     return _element;
@@ -81,7 +79,7 @@ function Scanner(){
   /*
    *
    *@return selected col -1
-  */
+   */
 
   _thisObj.getSelCol = function(){
     if (_selCol!=null) {
@@ -91,7 +89,7 @@ function Scanner(){
   /*
    *
    *@return selected row -1
-  */
+   */
 
   _thisObj.getSelRow = function(){
     if (_selRow!=null) {
@@ -119,11 +117,11 @@ function Scanner(){
    */
   var _scanItem = function(type) {
     if (type==='row') {
-    var row = $(_element +' tr');
+      var row = $(_element +' tr');
     }else if(type==='col'){
       var row = $(_element +' tr:eq('+_selRow+') td');  
     }else{}    
-    
+
     // console.log(_currentIndex+"  "+_maxRows); 
     row.eq(_currentIndex).css('background', _thisObj.selectColor);
     // Unselect last item when loop is done
@@ -142,9 +140,9 @@ function Scanner(){
   var _startScanItems = function(type){
     _scanItem(type);
     if (type==="row") {
-     var maxItems=_maxRows; 
+      var maxItems=_maxRows; 
     } else if (type==="col") {
-              var maxItems=_maxCols; 
+      var maxItems=_maxCols; 
     }
     // Reset to create loop effect
     if (_currentIndex===maxItems) {
@@ -191,7 +189,7 @@ function Scanner(){
       _getCmd();
       _thisObj.stopTimer("col");
       // console.log("_selCol "+ _selCol);
-     _thisObj.startTimer('row',_thisObj.scanSpeed);
+      _thisObj.startTimer('row',_thisObj.scanSpeed);
     }
   }//_selectItem
 
@@ -199,7 +197,7 @@ function Scanner(){
    * Pre: actions needs to be pre-defined by user (see init.js for example)
    *@return void
    */
- var _getCmd = function() {
+  var _getCmd = function() {
     if (_selRow===null||_selCol===null) {
       console.error("_selRow or _selCol null");
       return false;
@@ -216,48 +214,54 @@ function Scanner(){
     else     {
       console.error("Actions not defined.");
     }
- }//_getCmd
+  }//_getCmd
 
 
- /*
-  *@return void
-  *@POST: if controlBarStyle is already set by an other the style won't changed
-  */
- _thisObj.setControlBar = function(){
-   if (_elemRaw===null) {
-     console.error("_elemRaw is null");
-     return false;
+  /*
+   * @PARA position: Set controlBar at top or bottom of page, default: top
+   *@return void
+   *@POST: if controlBarStyle is already set by an other the style won't changed
+   */
+  _thisObj.setControlBar = function(position){
+    if (_elemRaw===null) {
+      console.error("_elemRaw is null");
+      return false;
 
-   }
-   var controlBar=$('#controlBar');
-   //Checks if controlBar already exists
-   if (controlBar.length===0) {
-     var mPanel ='<div id="controlBar" style="'+_thisObj.controlBarStyle+'" >';
-     mPanel +='<a id="scanModeOnOff_'+_elemRaw+'" title="'+_elemRaw+'" href="#" >Scan mode off</a>';
-     mPanel +='</div>';
+    }
+    var controlBar=$('#controlBar');
+    //Checks if controlBar already exists
+    if (controlBar.length===0) {
+      var mPanel ='<div id="controlBar" style="'+_thisObj.controlBarStyle+'" >';
+      mPanel +='<a id="scanModeOnOff_'+_elemRaw+'" title="'+_elemRaw+'" href="#" >Scan mode off</a>';
+      mPanel +='</div>';
 
-     //Set control bar at top of page
-     $(document.body).children().first().before(mPanel);
-   }else {
-     var mPanel =' <a id="scanModeOnOff_'+_elemRaw+'" title="'+_elemRaw+'" href="#" >Scan mode off</a>';
-     controlBar.append(mPanel);
-   }
- } //setControlBar
+      //Set control bar at top/bottom of page
+      if ((typeof position==='undefined'||position===''||position=='top')){
+        $(document.body).children().first().before(mPanel);
+      }
+      else{
+        $(document.body).append(mPanel);
+      }
+    }else {
+      var mPanel =' <a id="scanModeOnOff_'+_elemRaw+'" title="'+_elemRaw+'" href="#" >Scan mode off</a>';
+      controlBar.append(mPanel);
+    }
+  } //setControlBar
 
- /*
-  * Style of controllerDiv can be changed
-  * @para srcElem: Insert scanPanel in direction of srcElem, default:_element
-  * @para direction, after/before, default:after
-  *@return void
-  */
- _thisObj.setScanPanel = function(srcElem,direction){
-   if (_elemRaw===null) {
-     console.error("_elemRaw is null");
-     return false;
+  /*
+   * Style of controllerDiv can be changed
+   * @para srcElem: Insert scanPanel in direction of srcElem, default:_element
+   * @para direction, after/before, default:after
+   *@return void
+   */
+  _thisObj.setScanPanel = function(srcElem,direction){
+    if (_elemRaw===null) {
+      console.error("_elemRaw is null");
+      return false;
 
-   }
-   
-  var panel =
+    }
+
+    var panel =
       '<div id="controllerDiv_'+_elemRaw+'" style="'+_thisObj.controllerDivStyle+'">';
     panel += 'scan NxM '+_elemRaw+'</br >  ';
     panel += '<input type="button" value="start" name="" id="start_'+_elemRaw+'" title="Start scanning items."/>';
@@ -267,10 +271,9 @@ function Scanner(){
     panel += '<font size="0.4px">Scan Speed:</font>   <input type="text" title="Set scan speed in ms." id="scanSpeed_'+_elemRaw+'" name="scanSpeed" value="600" style="width:60px;">';
     panel += '<input type="button" name="btnChangeSpeed" value="Change" id="changeScanSpeed_'+_elemRaw+'" disabled="true" >';
 
-        //Sets control panel 
+    //Sets control panel 
     //Checks if srcElem exists, else default _element
-    srcElem = ((typeof srcElem==='undefined'||srcElem===''||srcElem.length===0))?_element:srcElem;
-    console.info(srcElem);
+    srcElem = ((typeof srcElem==='undefined'||srcElem===''||$(srcElem).length===0))?_element:srcElem;
     if (direction==''||typeof direction==='undefined'||direction!='before') {
       $(srcElem).after(panel);
     }
@@ -292,21 +295,21 @@ function Scanner(){
     _thisObj.scanSpeed = speed;
     console.log("Scan speed set to: "+_thisObj.scanSpeed);
   }//setScanPanel
-  
+
   /*
    *
    */
   _thisObj.toggleScanOnOff = function(){
-     var sMOO = $('#scanModeOnOff_'+_elemRaw);
-     var valA = sMOO.text();
-     if (valA == 'Scan mode on') {
-       sMOO.text("Scan mode off");
-       $('#controllerDiv_'+_elemRaw).show();
-     }
-     if (valA == 'Scan mode off') {
-       sMOO.text("Scan mode on");
-       $('#controllerDiv_'+_elemRaw).hide();
-     }
+    var sMOO = $('#scanModeOnOff_'+_elemRaw);
+    var valA = sMOO.text();
+    if (valA == 'Scan mode on') {
+      sMOO.text("Scan mode off");
+      $('#controllerDiv_'+_elemRaw).show();
+    }
+    if (valA == 'Scan mode off') {
+      sMOO.text("Scan mode on");
+      $('#controllerDiv_'+_elemRaw).hide();
+    }
 
   }//_toggleScanOnOff
 
@@ -320,5 +323,5 @@ function Scanner(){
     }else{
       return false;
     }
-   }//toggleButtonDisable
+  }//toggleButtonDisable
 }

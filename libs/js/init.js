@@ -4,8 +4,10 @@ $(document).ready(function (){
    scanner.init('#test0');
    scanner.controllerDivStyle=''; 
    scanner.controlBarStyle='background-color:#999;';
-   scanner.setControlBar();
-  //Insert scanPanel before #test0 div
+   //Set control bar at bottom of page
+   //scanner.setControlBar("bottom");
+   scanner.setControlBar("top");
+   //Insert scanPanel before #test0 div
    scanner.setScanPanel("#test0",'before');
    //set actions to each buttons in #test0
    for (var j = 0, len = 5; j < len; j+=1) {
@@ -15,8 +17,8 @@ $(document).ready(function (){
          var elem=scanner.getElem();
          var col = scanner.getSelCol();
          var row = scanner.getSelRow();
-       var val = $(elem +' tr:eq('+row+') td:eq('+col+')').children().first().prop('id');
-        alert(val);
+         var val = $(elem +' tr:eq('+row+') td:eq('+col+')').children().first().prop('id');
+         alert(val);
        }
                               );
      }
@@ -78,6 +80,7 @@ $(document).ready(function (){
   scanner.init('#test');
   scanner.controllerDivStyle='background-color: yellow; width: 200px;'; 
   scanner.selectColor='green';
+  //control bar is already set, so item will only append to control bar
   scanner.setControlBar();
   //Insert scanPanel after #test3 div
    scanner.setScanPanel("#test3"); 
